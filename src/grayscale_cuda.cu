@@ -1,6 +1,7 @@
 #include <iostream>
 #include "grayscale_cuda.cuh"
 #include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
 constexpr float RED_WEIGHT{ 0.299f };
 constexpr float GREEN_WEIGHT{ 0.587f };
@@ -34,7 +35,7 @@ void ConvertBGRToGray(const unsigned char* h_imgBGR, unsigned char* h_imgGraysca
 
 	const dim3 threadsPerBlock(16, 16);
 	const dim3 numBlocks(((width + threadsPerBlock.x - 1) / threadsPerBlock.x), ((height + threadsPerBlock.y - 1) / threadsPerBlock.y));
-	ConvertToGrayscaleKernel <<<numBlocks, threadsPerBlock>>>(d_imgBGR, d_imgGrayscale, width, height, channels);
+	ConvertToGrayscaleKernel<<<numBlocks, threadsPerBlock>>>(d_imgBGR, d_imgGrayscale, width, height, channels);
 
 	cudaDeviceSynchronize();
 
