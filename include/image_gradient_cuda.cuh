@@ -8,13 +8,6 @@ enum class FilterSize
 	Size5x5 = 5
 };
 
-enum class PaddingType
-{
-	ZeroPadding,
-	ReplicatePadding,
-	ReflectPadding
-};
-
 void ComputeImageGradients(const cv::Mat& img,
 	float* h_Ix,
 	float* h_Iy,

@@ -94,39 +94,21 @@ void LoadFilterCoefficientsToConstantMemory(FilterSize filterSize)
 	}
 }
 
-void ComputeImageGradients(const cv::Mat& img,
-	float* h_Ix,
-	float* h_Iy,
-	FilterSize filterSize,
-	cv::BorderTypes borderType,
-	int width,
-	int height)
+void ComputeImageGradients(const cv::Mat& img, float* h_Ix, float* h_Iy, FilterSize filterSize, cv::BorderTypes borderType, int width, int height)
 {
 	cv::Mat imgPadded;
 	const int padSize = static_cast<int>(filterSize) / 2;
-	cv::copyMakeBorder(
-		img,
-		imgPadded,
-		padSize, padSize,        // top, bottom
-		padSize, padSize,        // left, right
-		borderType
-	);
+	cv::copyMakeBorder(img, imgPadded, padSize, padSize, padSize, padSize, borderType);
 
 	LoadFilterCoefficientsToConstantMemory(filterSize);
 
 	unsigned char* d_input;
-	cudaMalloc(&d_input, 
-		sizeof(unsigned char) * (width + 2 * padSize) * (height + 2 * padSize));
-	cudaMemcpy(d_input, 
-		imgPadded.data, 
-		sizeof(unsigned char) * (width + 2 * padSize) * (height + 2 * padSize), 
-		cudaMemcpyHostToDevice);
+	cudaMalloc(&d_input, sizeof(unsigned char) * (width + 2 * padSize) * (height + 2 * padSize));
+	cudaMemcpy(d_input, imgPadded.data, sizeof(unsigned char) * (width + 2 * padSize) * (height + 2 * padSize), cudaMemcpyHostToDevice);
 
 	float* d_Ix, * d_Iy;
-	cudaMalloc(&d_Ix, 
-		sizeof(float) * width * height);
-	cudaMalloc(&d_Iy, 
-		sizeof(float) * width * height);
+	cudaMalloc(&d_Ix, sizeof(float) * width * height);
+	cudaMalloc(&d_Iy, sizeof(float) * width * height);
 	
 	const dim3 threadsPerBlock(16, 16);
 	const dim3 numBlocks((width + threadsPerBlock.x - 1) / threadsPerBlock.x, (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
