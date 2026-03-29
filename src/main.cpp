@@ -2,6 +2,7 @@
 #include <iostream>
 #include "grayscale_cuda.cuh"
 #include "image_gradient_cuda.cuh"
+#include "second_moment_matrix.cuh"
 
 int main()
 {
@@ -31,7 +32,16 @@ int main()
 		
 		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
 
+		float* const h_Ixx = new float[width * height];
+		float* const h_Iyy = new float[width * height];
+		float* const h_Ixy = new float[width * height];
+		
+		ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height);
+
 		delete[] h_Ix;
 		delete[] h_Iy;
+		delete[] h_Ixx;
+		delete[] h_Iyy;
+		delete[] h_Ixy;
 	}
 }
