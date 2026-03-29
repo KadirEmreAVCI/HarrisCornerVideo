@@ -1,5 +1,5 @@
 #include <iostream>
-#include "second_moment_matrix.cuh"
+#include "second_moment_matrix_cuda.cuh"
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <opencv2/opencv.hpp>

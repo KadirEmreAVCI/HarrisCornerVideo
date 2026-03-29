@@ -11,7 +11,7 @@ add_executable(HarrisCornerVideo
     src/main.cpp
     src/grayscale_cuda.cu
     src/image_gradient_cuda.cu
-    src/second_moment_matrix.cu
+    src/second_moment_matrix_cuda.cu
 )
 
 target_include_directories(HarrisCornerVideo PRIVATE

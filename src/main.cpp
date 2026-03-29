@@ -2,7 +2,7 @@
 #include <iostream>
 #include "grayscale_cuda.cuh"
 #include "image_gradient_cuda.cuh"
-#include "second_moment_matrix.cuh"
+#include "second_moment_matrix_cuda.cuh"
 
 int main()
 {
