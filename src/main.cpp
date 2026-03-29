@@ -26,9 +26,12 @@ int main()
 		cv::imshow("Grayscale", imgGrayscale);
 		cv::waitKey(0);
 
-		unsigned char* h_Ix = new unsigned char[width * height];
-		unsigned char* h_Iy = new unsigned char[width * height];
+		float* const h_Ix = new float[width * height];
+		float* const h_Iy = new float[width * height];
 		
-		ComputeImageGradient(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
+		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
+
+		delete[] h_Ix;
+		delete[] h_Iy;
 	}
 }

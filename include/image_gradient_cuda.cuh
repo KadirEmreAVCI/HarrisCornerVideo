@@ -5,8 +5,7 @@
 enum class FilterSize
 {
 	Size3x3 = 3,
-	Size5x5 = 5,
-	Size7x7 = 7
+	Size5x5 = 5
 };
 
 enum class PaddingType
@@ -16,9 +15,9 @@ enum class PaddingType
 	ReflectPadding
 };
 
-void ComputeImageGradient(const cv::Mat& img, 
-	unsigned char* h_Ix, 
-	unsigned char* h_Iy, 
+void ComputeImageGradients(const cv::Mat& img,
+	float* h_Ix,
+	float* h_Iy,
 	FilterSize filterSize,
 	cv::BorderTypes borderType,
 	int width,
