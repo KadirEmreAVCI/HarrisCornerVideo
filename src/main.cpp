@@ -3,6 +3,7 @@
 #include "grayscale_cuda.cuh"
 #include "image_gradient_cuda.cuh"
 #include "second_moment_matrix_cuda.cuh"
+#include "gaussian_smoothing_cuda.cuh"
 
 int main()
 {
@@ -40,6 +41,13 @@ int main()
 
 		delete[] h_Ix;
 		delete[] h_Iy;
+
+		float* const h_Sxx = new float[width * height];
+		float* const h_Syy = new float[width * height];
+		float* const h_Sxy = new float[width * height];
+
+		ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, FilterSize::Size3x3);
+
 		delete[] h_Ixx;
 		delete[] h_Iyy;
 		delete[] h_Ixy;

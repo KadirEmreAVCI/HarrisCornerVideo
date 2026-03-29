@@ -12,6 +12,7 @@ add_executable(HarrisCornerVideo
     src/grayscale_cuda.cu
     src/image_gradient_cuda.cu
     src/second_moment_matrix_cuda.cu
+    src/gaussian_smoothing_cuda.cu
 )
 
 target_include_directories(HarrisCornerVideo PRIVATE
