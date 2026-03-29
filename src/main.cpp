@@ -1,32 +1,34 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include "grayscale_cuda.cuh"
+#include "image_gradient_cuda.cuh"
 
 int main()
 {
-	cv::Mat img = cv::imread("C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/Lenna.png");
-	if (img.empty())
+	cv::Mat imgOrig = cv::imread("C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/Lenna.png");
+	if (imgOrig.empty())
 	{
 		std::cout << "Could not read the image: " << std::endl;
 	}
 	else
 	{
-		const unsigned width = img.cols;
-		const unsigned height = img.rows;
-		const unsigned channels = img.channels();
+		const unsigned width = imgOrig.cols;
+		const unsigned height = imgOrig.rows;
+		const unsigned channels = imgOrig.channels();
 
 		std::cout << "Image loaded successfully: " << width << "x" << height << std::endl;
 		std::cout << "Image channels = " << channels << std::endl;
 		
-		unsigned char* h_imgGrayscale = new unsigned char[width * height];
-
-		ConvertBGRToGray(img.data, h_imgGrayscale, width, height, channels);
+		cv::Mat imgGrayscale;
+		ConvertBGRToGray(imgOrig, imgGrayscale, width, height, channels);
 		
-		cv::Mat grayImg(height, width, CV_8UC1, h_imgGrayscale);
-		cv::imshow("Original", img);
-		cv::imshow("Grayscale", grayImg);
+		cv::imshow("Original", imgOrig);
+		cv::imshow("Grayscale", imgGrayscale);
 		cv::waitKey(0);
+
+		unsigned char* h_Ix = new unsigned char[width * height];
+		unsigned char* h_Iy = new unsigned char[width * height];
 		
-		delete[] h_imgGrayscale;
+		ComputeImageGradient(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
 	}
 }

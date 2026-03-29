@@ -21,8 +21,10 @@ __global__ void ConvertToGrayscaleKernel(unsigned char* input, unsigned char* ou
 	}
 }
 
-void ConvertBGRToGray(const unsigned char* h_imgBGR, unsigned char* h_imgGrayscale, int width, int height, int channels)
+void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int height, int channels)
 {
+	const unsigned char* h_imgBGR = imgBGR.data;
+	unsigned char* h_imgGrayscale = new unsigned char[width * height];
 	unsigned char *d_imgBGR, *d_imgGrayscale;
 	
 	cudaMalloc(&d_imgBGR, sizeof(unsigned char) * (width * height * channels));
@@ -41,6 +43,10 @@ void ConvertBGRToGray(const unsigned char* h_imgBGR, unsigned char* h_imgGraysca
 
 	cudaMemcpy(h_imgGrayscale, d_imgGrayscale, width * height * sizeof(unsigned char), cudaMemcpyDeviceToHost);
 
+	imgGray.create(height, width, CV_8UC1);
+	std::memcpy(imgGray.data, h_imgGrayscale, width * height * sizeof(unsigned char));
+
 	cudaFree(d_imgBGR);
 	cudaFree(d_imgGrayscale);
+	delete[] h_imgGrayscale;
 }
