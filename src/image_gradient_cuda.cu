@@ -51,7 +51,7 @@ __global__ void ComputeImageGradientsKernel(const unsigned char* input, float* I
 	}
 }
 
-void LoadFilterCoefficientsToConstantMemory(FilterSize filterSize)
+void LoadSobelFilterCoefficients(FilterSize filterSize)
 {
 	if (filterSize == FilterSize::Size3x3)
 	{
@@ -100,7 +100,7 @@ void ComputeImageGradients(const cv::Mat& img, float* h_Ix, float* h_Iy, FilterS
 	const int padSize = static_cast<int>(filterSize) / 2;
 	cv::copyMakeBorder(img, imgPadded, padSize, padSize, padSize, padSize, borderType);
 
-	LoadFilterCoefficientsToConstantMemory(filterSize);
+	LoadSobelFilterCoefficients(filterSize);
 
 	unsigned char* d_input;
 	cudaMalloc(&d_input, sizeof(unsigned char) * (width + 2 * padSize) * (height + 2 * padSize));
