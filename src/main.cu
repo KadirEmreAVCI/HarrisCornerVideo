@@ -6,6 +6,8 @@
 #include "second_moment_matrix_cuda.cuh"
 #include "gaussian_smoothing_cuda.cuh"
 
+constexpr FilterSize filterSize = FilterSize::Size3x3;
+
 int main()
 {
 	cv::Mat imgOrig = cv::imread("C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/Lenna.png");
@@ -33,7 +35,7 @@ int main()
 		cudaMallocHost(&h_Ix, sizeof(float) * width * height);
 		cudaMallocHost(&h_Iy, sizeof(float) * width * height);
 
-		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
+		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, filterSize, cv::BORDER_REPLICATE, width, height);
 
 		float* h_Ixx, * h_Iyy, * h_Ixy;
 		cudaMallocHost(&h_Ixx, sizeof(float) * width * height);
@@ -50,7 +52,7 @@ int main()
 		cudaMallocHost(&h_Syy, sizeof(float) * width * height);
 		cudaMallocHost(&h_Sxy, sizeof(float) * width * height);
 
-		ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, FilterSize::Size3x3);
+		ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, filterSize);
 
 		cudaFreeHost(h_Ixx);
 		cudaFreeHost(h_Iyy);

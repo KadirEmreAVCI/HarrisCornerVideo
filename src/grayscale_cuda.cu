@@ -50,11 +50,13 @@ void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int he
 		int currentChunkHeight = endRow - startRow;
 
 		const int offsetBGR = startRow * width * channels;
-		cudaMemcpyAsync(d_imgBGR + offsetBGR, h_imgBGR + offsetBGR, sizeof(unsigned char) * width * currentChunkHeight * channels, cudaMemcpyHostToDevice, streams[i]);
+		const size_t copiedDataSizeBGR = sizeof(unsigned char) * width * currentChunkHeight * channels;
+		cudaMemcpyAsync(d_imgBGR + offsetBGR, h_imgBGR + offsetBGR, copiedDataSizeBGR, cudaMemcpyHostToDevice, streams[i]);
 		
 		const int offsetGray = startRow * width;
+		const size_t copiedDataSizeGray = sizeof(unsigned char) * width * currentChunkHeight;
 		ConvertToGrayscaleKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_imgBGR + offsetBGR, d_imgGrayscale + offsetGray, width, currentChunkHeight, channels);
-		cudaMemcpyAsync(h_imgGrayscale + offsetGray, d_imgGrayscale + offsetGray, sizeof(unsigned char) * width * currentChunkHeight, cudaMemcpyDeviceToHost, streams[i]);
+		cudaMemcpyAsync(h_imgGrayscale + offsetGray, d_imgGrayscale + offsetGray, copiedDataSizeGray, cudaMemcpyDeviceToHost, streams[i]);
 	}
 	for (int i = 0; i < NSTREAMS; ++i)
 	{
