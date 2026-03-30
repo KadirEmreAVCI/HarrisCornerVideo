@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(OpenCV REQUIRED)
 
 add_executable(HarrisCornerVideo
-    src/main.cpp
+    src/main.cu
     src/grayscale_cuda.cu
     src/image_gradient_cuda.cu
     src/second_moment_matrix_cuda.cu

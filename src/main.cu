@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <cuda_runtime.h>
 #include "grayscale_cuda.cuh"
 #include "image_gradient_cuda.cuh"
 #include "second_moment_matrix_cuda.cuh"
@@ -28,28 +29,31 @@ int main()
 		cv::imshow("Grayscale", imgGrayscale);
 		cv::waitKey(0);
 
-		float* const h_Ix = new float[width * height];
-		float* const h_Iy = new float[width * height];
-		
+		float* h_Ix, * h_Iy;
+		cudaMallocHost(&h_Ix, sizeof(float) * width * height);
+		cudaMallocHost(&h_Iy, sizeof(float) * width * height);
+
 		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, FilterSize::Size3x3, cv::BORDER_REPLICATE, width, height);
 
-		float* const h_Ixx = new float[width * height];
-		float* const h_Iyy = new float[width * height];
-		float* const h_Ixy = new float[width * height];
+		float* h_Ixx, * h_Iyy, * h_Ixy;
+		cudaMallocHost(&h_Ixx, sizeof(float) * width * height);
+		cudaMallocHost(&h_Iyy, sizeof(float) * width * height);
+		cudaMallocHost(&h_Ixy, sizeof(float) * width * height);
 		
 		ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height);
 
-		delete[] h_Ix;
-		delete[] h_Iy;
+		cudaFreeHost(h_Ix);
+		cudaFreeHost(h_Iy);
 
-		float* const h_Sxx = new float[width * height];
-		float* const h_Syy = new float[width * height];
-		float* const h_Sxy = new float[width * height];
+		float* h_Sxx, * h_Syy, * h_Sxy;
+		cudaMallocHost(&h_Sxx, sizeof(float) * width * height);
+		cudaMallocHost(&h_Syy, sizeof(float) * width * height);
+		cudaMallocHost(&h_Sxy, sizeof(float) * width * height);
 
 		ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, FilterSize::Size3x3);
 
-		delete[] h_Ixx;
-		delete[] h_Iyy;
-		delete[] h_Ixy;
+		cudaFreeHost(h_Ixx);
+		cudaFreeHost(h_Iyy);
+		cudaFreeHost(h_Ixy);
 	}
 }
