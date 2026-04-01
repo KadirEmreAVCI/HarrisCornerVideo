@@ -6,6 +6,7 @@
 #include "second_moment_matrix_cuda.cuh"
 #include "gaussian_smoothing_cuda.cuh"
 #include "harris_response_cuda.cuh"
+#include "finding_corners_cuda.cuh"
 
 constexpr FilterSize filterSize = FilterSize::Size3x3;
 
@@ -59,13 +60,30 @@ int main()
 		cudaFreeHost(h_Iyy);
 		cudaFreeHost(h_Ixy);
 
-		float* harrisResponse;
-		cudaMallocHost(&harrisResponse, sizeof(float) * width * height);
+		float* h_harrisResponse;
+		cudaMallocHost(&h_harrisResponse, sizeof(float) * width * height);
 
-		CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, harrisResponse, width, height);
+		CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, h_harrisResponse, width, height);
 
 		cudaFreeHost(h_Sxx);
 		cudaFreeHost(h_Syy);
 		cudaFreeHost(h_Sxy);
+
+		PixelCoord* h_corners;
+		unsigned int h_cornerCount = 0;
+		cudaMallocHost(&h_corners, sizeof(PixelCoord) * width * height);
+		
+		FindCorners(h_harrisResponse, width, height, h_corners, h_cornerCount);
+
+		cv::Mat output = imgOrig.clone();
+
+		for (unsigned int i = 0; i < h_cornerCount; ++i)
+		{
+			const auto& c = h_corners[i];
+			cv::circle(output, cv::Point(c.x, c.y), 2, cv::Scalar(0, 0, 255), 1);
+		}
+
+		cv::imshow("Corners", output);
+		cv::waitKey(0);
 	}
 }

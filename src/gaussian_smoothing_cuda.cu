@@ -71,7 +71,7 @@ void LoadGaussianFilterCoefficients(FilterSize filterSize)
 	}
 }
 
-void ApplyPaddingToMatrixComponent(const float* input, cv::Mat& imgOutput, int width, int height, cv::BorderTypes borderType, int padSize)
+static void ApplyPaddingToMatrixComponent(const float* input, cv::Mat& imgOutput, int width, int height, cv::BorderTypes borderType, int padSize)
 {
 	cv::Mat imgInput(height, width, CV_32F, const_cast<float*>(input));
 	cv::copyMakeBorder(imgInput, imgOutput, padSize, padSize, padSize, padSize, borderType);
