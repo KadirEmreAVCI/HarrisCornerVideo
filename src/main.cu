@@ -5,6 +5,7 @@
 #include "image_gradient_cuda.cuh"
 #include "second_moment_matrix_cuda.cuh"
 #include "gaussian_smoothing_cuda.cuh"
+#include "harris_response_cuda.cuh"
 
 constexpr FilterSize filterSize = FilterSize::Size3x3;
 
@@ -57,5 +58,14 @@ int main()
 		cudaFreeHost(h_Ixx);
 		cudaFreeHost(h_Iyy);
 		cudaFreeHost(h_Ixy);
+
+		float* harrisResponse;
+		cudaMallocHost(&harrisResponse, sizeof(float) * width * height);
+
+		CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, harrisResponse, width, height);
+
+		cudaFreeHost(h_Sxx);
+		cudaFreeHost(h_Syy);
+		cudaFreeHost(h_Sxy);
 	}
 }
