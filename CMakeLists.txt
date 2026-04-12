@@ -14,6 +14,7 @@ add_executable(HarrisCornerVideo
     src/second_moment_matrix_cuda.cu
     src/gaussian_smoothing_cuda.cu
     src/harris_response_cuda.cu
+    src/finding_corners_cuda.cu
 )
 
 target_include_directories(HarrisCornerVideo PRIVATE

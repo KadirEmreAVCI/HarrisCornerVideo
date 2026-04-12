@@ -51,7 +51,7 @@ __global__ void ComputeImageGradientsKernel(const unsigned char* input, float* I
 	}
 }
 
-void LoadSobelFilterCoefficients(FilterSize filterSize)
+static void LoadSobelFilterCoefficients(FilterSize filterSize)
 {
 	if (filterSize == FilterSize::Size3x3)
 	{
