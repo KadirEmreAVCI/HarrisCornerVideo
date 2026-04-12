@@ -9,6 +9,12 @@ find_package(OpenCV REQUIRED)
 
 add_executable(HarrisCornerVideo
     src/main.cu
+    src/grayscale_cuda.cu
+    src/image_gradient_cuda.cu
+    src/second_moment_matrix_cuda.cu
+    src/gaussian_smoothing_cuda.cu
+    src/harris_response_cuda.cu
+    src/finding_corners_cuda.cu
 )
 
 target_include_directories(HarrisCornerVideo PRIVATE
