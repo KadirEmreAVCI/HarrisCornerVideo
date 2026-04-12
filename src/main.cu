@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <cuda_runtime.h>
+
 #include "grayscale_cuda.cuh"
 #include "image_gradient_cuda.cuh"
 #include "second_moment_matrix_cuda.cuh"
@@ -12,78 +13,137 @@ constexpr FilterSize filterSize = FilterSize::Size3x3;
 
 int main()
 {
-	cv::Mat imgOrig = cv::imread("C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/Lenna.png");
-	if (imgOrig.empty())
-	{
-		std::cout << "Could not read the image: " << std::endl;
-	}
-	else
-	{
-		const unsigned width = imgOrig.cols;
-		const unsigned height = imgOrig.rows;
-		const unsigned channels = imgOrig.channels();
+    const std::string inputVideoPath =
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/hacettepe_demo_input.mp4";
+    const std::string outputVideoPath =
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/hacettepe_demo_output.mp4";
 
-		std::cout << "Image loaded successfully: " << width << "x" << height << std::endl;
-		std::cout << "Image channels = " << channels << std::endl;
-		
-		cv::Mat imgGrayscale;
-		ConvertBGRToGray(imgOrig, imgGrayscale, width, height, channels);
-		
-		cv::imshow("Original", imgOrig);
-		cv::imshow("Grayscale", imgGrayscale);
-		cv::waitKey(0);
+    cv::VideoCapture cap(inputVideoPath);
+    if (!cap.isOpened())
+    {
+        std::cerr << "Could not open input video: " << inputVideoPath << std::endl;
+        return -1;
+    }
 
-		float* h_Ix, * h_Iy;
-		cudaMallocHost(&h_Ix, sizeof(float) * width * height);
-		cudaMallocHost(&h_Iy, sizeof(float) * width * height);
+    const int width = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
+    const int height = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+    double fps = cap.get(cv::CAP_PROP_FPS);
 
-		ComputeImageGradients(imgGrayscale, h_Ix, h_Iy, filterSize, cv::BORDER_REPLICATE, width, height);
+    if (fps <= 0.0)
+        fps = 30.0;
 
-		float* h_Ixx, * h_Iyy, * h_Ixy;
-		cudaMallocHost(&h_Ixx, sizeof(float) * width * height);
-		cudaMallocHost(&h_Iyy, sizeof(float) * width * height);
-		cudaMallocHost(&h_Ixy, sizeof(float) * width * height);
-		
-		ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height);
+    const int fourcc = cv::VideoWriter::fourcc('m', 'p', '4', 'v');
+    cv::VideoWriter writer(outputVideoPath, fourcc, fps, cv::Size(width, height));
 
-		cudaFreeHost(h_Ix);
-		cudaFreeHost(h_Iy);
+    if (!writer.isOpened())
+    {
+        std::cerr << "Could not open output video: " << outputVideoPath << std::endl;
+        return -1;
+    }
 
-		float* h_Sxx, * h_Syy, * h_Sxy;
-		cudaMallocHost(&h_Sxx, sizeof(float) * width * height);
-		cudaMallocHost(&h_Syy, sizeof(float) * width * height);
-		cudaMallocHost(&h_Sxy, sizeof(float) * width * height);
+    std::cout << "Video opened successfully: " << width << "x" << height
+        << "  fps=" << fps << std::endl;
 
-		ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, filterSize);
+    // Reusable pinned host buffers
+    float* h_Ix = nullptr;
+    float* h_Iy = nullptr;
+    float* h_Ixx = nullptr;
+    float* h_Iyy = nullptr;
+    float* h_Ixy = nullptr;
+    float* h_Sxx = nullptr;
+    float* h_Syy = nullptr;
+    float* h_Sxy = nullptr;
+    float* h_harrisResponse = nullptr;
+    PixelCoord* h_corners = nullptr;
 
-		cudaFreeHost(h_Ixx);
-		cudaFreeHost(h_Iyy);
-		cudaFreeHost(h_Ixy);
+    const size_t pixelCount = static_cast<size_t>(width) * static_cast<size_t>(height);
 
-		float* h_harrisResponse;
-		cudaMallocHost(&h_harrisResponse, sizeof(float) * width * height);
+    cudaMallocHost(&h_Ix, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_Iy, sizeof(float) * pixelCount);
 
-		CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, h_harrisResponse, width, height);
+    cudaMallocHost(&h_Ixx, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_Iyy, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_Ixy, sizeof(float) * pixelCount);
 
-		cudaFreeHost(h_Sxx);
-		cudaFreeHost(h_Syy);
-		cudaFreeHost(h_Sxy);
+    cudaMallocHost(&h_Sxx, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_Syy, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_Sxy, sizeof(float) * pixelCount);
 
-		PixelCoord* h_corners;
-		unsigned int h_cornerCount = 0;
-		cudaMallocHost(&h_corners, sizeof(PixelCoord) * width * height);
-		
-		FindCorners(h_harrisResponse, width, height, h_corners, h_cornerCount);
+    cudaMallocHost(&h_harrisResponse, sizeof(float) * pixelCount);
+    cudaMallocHost(&h_corners, sizeof(PixelCoord) * pixelCount);
 
-		cv::Mat output = imgOrig.clone();
+    cv::Mat frame;
+    cv::Mat grayFrame;
+    cv::Mat outputFrame;
 
-		for (unsigned int i = 0; i < h_cornerCount; ++i)
-		{
-			const auto& c = h_corners[i];
-			cv::circle(output, cv::Point(c.x, c.y), 2, cv::Scalar(0, 0, 255), 1);
-		}
+    unsigned int frameIndex = 0;
 
-		cv::imshow("Corners", output);
-		cv::waitKey(0);
-	}
+    while (cap.read(frame))
+    {
+        if (frame.empty())
+            break;
+
+        if (frame.cols != width || frame.rows != height)
+        {
+            std::cerr << "Frame size changed during video stream. Unsupported." << std::endl;
+            break;
+        }
+
+        const unsigned channels = frame.channels();
+        unsigned int h_cornerCount = 0;
+
+        ConvertBGRToGray(frame, grayFrame, width, height, channels);
+
+        ComputeImageGradients(grayFrame, h_Ix, h_Iy, filterSize, cv::BORDER_REPLICATE, width, height);
+
+        ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height);
+
+        ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, filterSize);
+
+        CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, h_harrisResponse, width, height);
+
+        FindCorners(h_harrisResponse, width, height, h_corners, h_cornerCount);
+
+        outputFrame = frame.clone();
+
+        for (unsigned int i = 0; i < h_cornerCount; ++i)
+        {
+            const PixelCoord& c = h_corners[i];
+            cv::circle(outputFrame, cv::Point(c.x, c.y), 2, cv::Scalar(0, 0, 255), 1);
+        }
+
+        writer.write(outputFrame);
+
+        cv::imshow("Harris Corners Video", outputFrame);
+        const int key = cv::waitKey(1);
+        if (key == 27) // ESC
+            break;
+
+        ++frameIndex;
+        if (frameIndex % 30 == 0)
+        {
+            std::cout << "Processed frame count: " << frameIndex << std::endl;
+        }
+    }
+
+    cudaFreeHost(h_Ix);
+    cudaFreeHost(h_Iy);
+
+    cudaFreeHost(h_Ixx);
+    cudaFreeHost(h_Iyy);
+    cudaFreeHost(h_Ixy);
+
+    cudaFreeHost(h_Sxx);
+    cudaFreeHost(h_Syy);
+    cudaFreeHost(h_Sxy);
+
+    cudaFreeHost(h_harrisResponse);
+    cudaFreeHost(h_corners);
+
+    cap.release();
+    writer.release();
+    cv::destroyAllWindows();
+
+    std::cout << "Finished. Output saved to: " << outputVideoPath << std::endl;
+    return 0;
 }
