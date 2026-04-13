@@ -18,6 +18,28 @@
         "CMAKE_CXX_STANDARD": "20",
         "OpenCV_DIR": "D:/devtools/opencv-install-vs2026/x64/vc18/lib"
       }
+    },
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CUDA_TOOLKIT_ROOT_DIR": "/usr/local/cuda",
+        "CMAKE_CUDA_COMPILER": "/usr/local/cuda/bin/nvcc"
+      }
+    },
+    {
+      "name": "linux-release",
+      "displayName": "Linux Release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CUDA_TOOLKIT_ROOT_DIR": "/usr/local/cuda",
+        "CMAKE_CUDA_COMPILER": "/usr/local/cuda/bin/nvcc"
+      }
     }
   ],
   "buildPresets": [
@@ -25,6 +47,16 @@
       "name": "build-vs2026-debug",
       "configurePreset": "vs2026-debug",
       "configuration": "Debug"
+    },
+    {
+      "name": "build-linux-debug",
+      "configurePreset": "linux-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "build-linux-release",
+      "configurePreset": "linux-release",
+      "configuration": "Release"
     }
   ]
 }

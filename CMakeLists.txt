@@ -29,5 +29,5 @@ target_link_libraries(HarrisCornerVideo PRIVATE
 
 set_target_properties(HarrisCornerVideo PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
-    CUDA_ARCHITECTURES 89
+    CUDA_ARCHITECTURES "89;120"
 )
