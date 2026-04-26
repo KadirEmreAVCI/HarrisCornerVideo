@@ -11,7 +11,7 @@
 
 constexpr FilterSize filterSize = FilterSize::Size3x3;
 
-int main()
+int main(int argc, char** argv)
 {
     const std::string inputVideoPath =
         "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/avengers_input_480p.mp4";
