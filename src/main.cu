@@ -13,14 +13,10 @@ constexpr FilterSize filterSize = FilterSize::Size3x3;
 
 int main(int argc, char** argv)
 {
-    if (argc != 1 && argc != 3)
-    {
-        std::cerr << "Usage: " << argv[0] << " [input_video output_video]" << std::endl;
-        return -1;
-    }
-
-    const std::string inputVideoPath  = (argc == 3) ? argv[1] : "../../data/hacettepe_demo_input.mp4";
-    const std::string outputVideoPath = (argc == 3) ? argv[2] : "../../data/hacettepe_demo_output.mp4";
+    const std::string inputVideoPath =
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/avengers_input_480p.mp4";
+    const std::string outputVideoPath =
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/output/avengers_output_480p.mp4";
 
     cv::VideoCapture cap(inputVideoPath);
     if (!cap.isOpened())
