@@ -14,9 +14,9 @@ constexpr FilterSize filterSize = FilterSize::Size3x3;
 int main()
 {
     const std::string inputVideoPath =
-        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/hacettepe_demo_input.mp4";
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/avengers_input_480p.mp4";
     const std::string outputVideoPath =
-        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/data/hacettepe_demo_output.mp4";
+        "C:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/output/avengers_output_480p.mp4";
 
     cv::VideoCapture cap(inputVideoPath);
     if (!cap.isOpened())
