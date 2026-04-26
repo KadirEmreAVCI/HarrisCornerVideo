@@ -1,0 +1,52 @@
+\relax 
+\citation{harris1988}
+\citation{shi1994}
+\citation{lowe2004}
+\citation{bay2008}
+\citation{rublee2011}
+\citation{harris1988}
+\citation{shi1994}
+\citation{lowe2004}
+\citation{bay2008}
+\citation{rublee2011}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work (Literature Review)}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Foundations of Corner Detection}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Scale and Invariance-Oriented Detectors}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Real-Time Feature Alternatives}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}GPU Vision Context}{1}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Literature Comparison with This Project}{1}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Literature comparison and positioning of the current CUDA Harris project}}{2}{}\protected@file@percent }
+\newlabel{tab:lit-comparison}{{I}{2}{}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}System and Project Structure}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Repository-Level Organization}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Execution Pipeline}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Kernel Responsibilities}{2}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Project/module structure used in the CUDA Harris pipeline implementation.}}{2}{}\protected@file@percent }
+\newlabel{fig:project-structure}{{1}{2}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}1}\texttt  {grayscale\_cuda.cu}}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}2}\texttt  {image\_gradient\_cuda.cu}}{2}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Frame-wise CUDA processing flow from input frame to corner-annotated output (two-row stage layout).}}{3}{}\protected@file@percent }
+\newlabel{fig:pipeline}{{2}{3}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}3}\texttt  {second\_moment\_matrix\_cuda.cu}}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}4}\texttt  {gaussian\_smoothing\_cuda.cu}}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}5}\texttt  {harris\_response\_cuda.cu}}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}6}\texttt  {finding\_corners\_cuda.cu}}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Method Details}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Mathematical Formulation}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Implementation Notes}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Plan (Results Pending)}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Planned Metrics}{3}{}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{harris1988}{1}
+\bibcite{shi1994}{2}
+\bibcite{lowe2004}{3}
+\bibcite{bay2008}{4}
+\bibcite{rublee2011}{5}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Planned Comparisons}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Planned Ablations}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Threats to Validity and Limitations}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion and Next Steps}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{References}{4}{}\protected@file@percent }
+\gdef \@abspage@last{4}

@@ -1,0 +1,58 @@
+This is BibTeX, Version 0.99e
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: harris_corner_video_report.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: IEEEtran.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Reallocating 'wiz_functions' (item size: 4) to 6000 items.
+Reallocating 'singl_function' (item size: 4) to 100 items.
+Database file #1: references.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 5 entries,
+            4087 wiz_defined-function locations,
+            853 strings with 8109 characters,
+and the built_in function-call counts, 4669 in all, are:
+= -- 371
+> -- 97
+< -- 50
++ -- 57
+- -- 13
+* -- 232
+:= -- 665
+add.period$ -- 10
+call.type$ -- 5
+change.case$ -- 5
+chr.to.int$ -- 123
+cite$ -- 5
+duplicate$ -- 310
+empty$ -- 370
+format.name$ -- 17
+if$ -- 1089
+int.to.chr$ -- 0
+int.to.str$ -- 5
+missing$ -- 48
+newline$ -- 38
+num.names$ -- 5
+pop$ -- 107
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 362
+stack$ -- 0
+substring$ -- 291
+swap$ -- 270
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 5
+warning$ -- 0
+while$ -- 25
+width$ -- 6
+write$ -- 71
