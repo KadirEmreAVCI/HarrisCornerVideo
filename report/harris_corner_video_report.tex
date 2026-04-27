@@ -183,7 +183,7 @@ Let an input RGB frame be denoted by channels $R(x,y)$, $G(x,y)$, and $B(x,y)$. 
 I(x,y) = 0.299\,R(x,y) + 0.587\,G(x,y) + 0.114\,B(x,y).
 \end{equation}
 
-For filtering-oriented stages, padding is applied on the CPU side to create an extended image $\tilde{I}(x,y)$ so neighborhood reads remain valid at boundaries. Using this padded representation, derivative and smoothing operations follow standard local convolution forms:
+For filtering-oriented stages, padding is applied on the CPU side (OpenCV \texttt{copyMakeBorder}) to create an extended image $\tilde{I}(x,y)$ so neighborhood reads remain valid at boundaries. The selected padding type is replicate border (\texttt{cv::BORDER\_REPLICATE}), which duplicates edge pixels into the halo region before data transfer to the device. This choice is preferred over applying no padding because valid convolutions without padding would shrink the effective output domain (or force edge-pixel discard), reducing corner coverage near frame borders and making stage outputs less directly aligned with the original frame size. Because this replicated halo is materialized on the host for each matrix/image input, transfers are performed per padded buffer and not as a single monolithic \texttt{cudaMemcpy} that would otherwise assume one already-contiguous source layout for all operands. Using this padded representation, derivative and smoothing operations follow standard local convolution forms:
 \begin{equation}
 I_x = K_x * \tilde{I}, \qquad I_y = K_y * \tilde{I},
 \end{equation}
@@ -203,16 +203,21 @@ R = \det(M) - k\, (\mathrm{trace}(M))^2.
 Pixels with large positive $R$ are interpreted as corners.
 
 \subsection{Implementation Notes}
-The staged decomposition in this project favors debuggability and selective optimization. The use of $3\times3$ Sobel and $3\times3$ Gaussian filters provides a practical balance between edge/corner quality and computational load. First, kernels can be validated independently against CPU-side references. Second, performance counters can be captured per stage to identify bottlenecks (e.g., memory bandwidth pressure in smoothing versus arithmetic intensity in response calculation). Third, parameter sweeps can be localized to one stage (e.g., Gaussian window size) without destabilizing the full pipeline. The implementation also applies CPU-side padding before filtering kernels to reduce boundary-branch complexity inside GPU convolutions.
+The staged decomposition in this project favors debuggability and selective optimization. First, kernels can be validated independently against CPU-side references. Second, performance counters can be captured per stage to identify bottlenecks (e.g., memory bandwidth pressure in smoothing versus arithmetic intensity in response calculation). Third, parameter sweeps can be localized to one stage (e.g., Gaussian window size) without destabilizing the full pipeline.
 
-\textbf{Missing information to add:}
+Using $3\times3$ Sobel and $3\times3$ Gaussian filters is a deliberate quality/performance compromise relative to larger masks such as $5\times5$. A $3\times3$ window reduces arithmetic operations, shared/global memory traffic, and halo size, so latency per frame is lower and occupancy pressure is generally lighter. The trade-off is that larger windows can provide stronger noise suppression and smoother gradient statistics, potentially improving robustness in noisy regions at the cost of additional blur, more expensive convolutions, and higher boundary overhead.
+
+Stream concurrency is used selectively. In this implementation, streams are assigned to kernels that process pixels independently by chunks (e.g., grayscale conversion, second-moment element-wise products, and Harris response evaluation), where asynchronous host--device copies and compute can overlap effectively. Filtering kernels are excluded from this stream-based chunking path because they require neighborhood context and padded-border management, which makes chunk partitioning and overlap handling more complex than point-wise kernels.
+
+Kernel launch configuration follows a 2D mapping strategy: both thread blocks and grids are defined in 2D so that kernel indexing directly matches image/matrix width-height dimensions, simplifying per-pixel coordinate mapping and coverage reasoning.
+
+Profiling tooling is defined at a high level in implementation notes: \texttt{nsight-compute} is used for kernel-level metrics, while \texttt{nsight-systems} is used for timeline and overlap analysis.
+
+\textbf{Information required to finalize the latest version:}
 \begin{itemize}
-    \item Numerical settings for $k$, Gaussian kernel size, and threshold.
-    \item Border handling policy (replicate, reflect, clamp, etc.).
-    \item Non-maximum suppression details (window size, tie-breaking).
-    \item Exact device-memory layout and per-stage buffer reuse policy.
-    \item Final numeric launch parameters used in experiments (block width/height and resulting grid dimensions).
-    \item Measured stream-overlap benefit for non-filtering kernels (if reported in results).
+    \item \textbf{Final detector parameters:} Harris constant $k$, Gaussian kernel size ($3\times3$ or $5\times5$), and response threshold value(s), including whether thresholds are fixed or resolution-dependent.
+    \item \textbf{Memory-layout and reuse details:} per-stage device buffers, reuse strategy across frames, and which allocations are persistent versus recreated per frame.
+    \item \textbf{Performance profiling plan:} collect runtime evidence with NVIDIA Nsight tools; detailed profiler outputs and interpretation are reported in the Experimental Results section.
 \end{itemize}
 
 \section{Experimental Plan (Results Pending)}
@@ -222,6 +227,7 @@ This section is intentionally designed to be completed after profiling and quali
 \begin{itemize}
     \item Runtime per frame (ms) and throughput (FPS) at multiple resolutions.
     \item End-to-end speedup versus a CPU baseline implementation.
+    \item Detailed Nsight-based analysis in results: kernel metrics from \texttt{nsight-compute} and overlap/timeline evidence from \texttt{nsight-systems}.
     \item Temporal consistency of detected corner counts.
     \item Optional repeatability/localization quality on benchmark image pairs.
 \end{itemize}
