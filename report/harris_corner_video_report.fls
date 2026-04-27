@@ -1,6 +1,6 @@
-PWD c:\Users\User\Desktop\Eğitim\Hacettepe\CMP674_ParallelComputingWithGPUs\Project\Report
+PWD c:\Users\User\Workspaces\VisualStudio\VS2026\HarrisCornerVideo\report
 INPUT C:\Users\User\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\User\Desktop\Eğitim\Hacettepe\CMP674_ParallelComputingWithGPUs\Project\Report\harris_corner_video_report.tex
+INPUT c:\Users\User\Workspaces\VisualStudio\VS2026\HarrisCornerVideo\report\harris_corner_video_report.tex
 OUTPUT harris_corner_video_report.log
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\tex\latex\ieeetran\IEEEtran.cls
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\tex\latex\ieeetran\IEEEtran.cls
@@ -286,11 +286,11 @@ INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr7t.
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrro7t.vf
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro8r.tfm
-INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
-INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT .\harris_corner_video_report.bbl
 INPUT .\harris_corner_video_report.bbl
 INPUT harris_corner_video_report.bbl
+INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
+INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri7t.vf
 INPUT D:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT harris_corner_video_report.aux
