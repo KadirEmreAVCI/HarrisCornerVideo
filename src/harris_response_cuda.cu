@@ -38,25 +38,52 @@ void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float
 	constexpr dim3 block{ 16, 16 };
 	for (int i = 0; i < nStreams; ++i)
 	{
-
 		const int startRow = i * chunkHeight;
 		const int endRow = std::min((i + 1) * chunkHeight, height);
 		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
 		const int offset = startRow * width;
-		
 
 		cudaMemcpyAsync(d_Sxx + offset, h_Sxx + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyHostToDevice, streams[i]);
 		cudaMemcpyAsync(d_Syy + offset, h_Syy + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyHostToDevice, streams[i]);
 		cudaMemcpyAsync(d_Sxy + offset, h_Sxy + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyHostToDevice, streams[i]);
+	}
 
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+		const int offset = startRow * width;
 		const dim3 grid((width + (block.x - 1)) / block.x, (currentChunkHeight + (block.y - 1)) / block.y);
 		constexpr int SHARED_MEM_SIZE{ 0 };
 		CalculateHarrisResponseKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_Sxx + offset, d_Syy + offset, d_Sxy + offset, d_harrisResponse + offset, width, currentChunkHeight);
+	}
 
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+		const int offset = startRow * width;
 		cudaMemcpyAsync(h_harrisResponse + offset, d_harrisResponse + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	cudaDeviceSynchronize();
+	for (int i = 0; i < nStreams; ++i)
+	{
+		cudaStreamSynchronize(streams[i]);
+	}
 
 	cudaFree(d_Sxx);
 	cudaFree(d_Syy);

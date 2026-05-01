@@ -40,23 +40,54 @@ void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int he
 	const int chunkHeight = (height + (nStreams - 1)) / nStreams;
 	const dim3 block(16, 16);
 	const dim3 grid(((width + block.x - 1) / block.x), ((chunkHeight + block.y - 1) / block.y));
+
 	for (int i = 0; i < nStreams; ++i)
 	{
-		
 		const int startRow = i * chunkHeight;
 		const int endRow = std::min((i + 1) * chunkHeight, height);
-		int currentChunkHeight = endRow - startRow;
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
 
 		const int offsetBGR = startRow * width * channels;
 		const size_t copiedDataSizeBGR = sizeof(unsigned char) * width * currentChunkHeight * channels;
 		cudaMemcpyAsync(d_imgBGR + offsetBGR, h_imgBGR + offsetBGR, copiedDataSizeBGR, cudaMemcpyHostToDevice, streams[i]);
-		
+	}
+
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+
+		const int offsetBGR = startRow * width * channels;
+		const int offsetGray = startRow * width;
+		ConvertToGrayscaleKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_imgBGR + offsetBGR, d_imgGrayscale + offsetGray, width, currentChunkHeight, channels);
+	}
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+
 		const int offsetGray = startRow * width;
 		const size_t copiedDataSizeGray = sizeof(unsigned char) * width * currentChunkHeight;
-		ConvertToGrayscaleKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_imgBGR + offsetBGR, d_imgGrayscale + offsetGray, width, currentChunkHeight, channels);
 		cudaMemcpyAsync(h_imgGrayscale + offsetGray, d_imgGrayscale + offsetGray, copiedDataSizeGray, cudaMemcpyDeviceToHost, streams[i]);
 	}
-	cudaDeviceSynchronize();
+	for (int i = 0; i < nStreams; ++i)
+	{
+		cudaStreamSynchronize(streams[i]);
+	}
 	
 	/*cudaMemcpy(d_imgBGR, h_imgBGR, sizeof(unsigned char) * (width * height * channels), cudaMemcpyHostToDevice);
 
