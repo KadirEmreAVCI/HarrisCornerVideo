@@ -22,7 +22,7 @@ __global__ void ConvertToGrayscaleKernel(const unsigned char* input, unsigned ch
 	}
 }
 
-void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int height, int channels)
+void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int height, int channels, cudaStream_t* streams, int nStreams)
 {
 	cudaMemcpyToSymbol(c_red_weight, &RED_WEIGHT, sizeof(float));
 	cudaMemcpyToSymbol(c_green_weight, &GREEN_WEIGHT, sizeof(float));
@@ -36,14 +36,12 @@ void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int he
 	cudaMalloc(&d_imgBGR, sizeof(unsigned char) * (width * height * channels));
 	cudaMalloc(&d_imgGrayscale, sizeof(unsigned char) * (width * height));
 	
-	constexpr int NSTREAMS = 4, SHARED_MEM_SIZE = 0;
-	cudaStream_t streams[NSTREAMS];
-	const int chunkHeight = (height + (NSTREAMS - 1)) / NSTREAMS;
+	constexpr int SHARED_MEM_SIZE = 0;
+	const int chunkHeight = (height + (nStreams - 1)) / nStreams;
 	const dim3 block(16, 16);
 	const dim3 grid(((width + block.x - 1) / block.x), ((chunkHeight + block.y - 1) / block.y));
-	for (int i = 0; i < NSTREAMS; ++i)
+	for (int i = 0; i < nStreams; ++i)
 	{
-		cudaStreamCreate(&streams[i]);
 		
 		const int startRow = i * chunkHeight;
 		const int endRow = std::min((i + 1) * chunkHeight, height);
@@ -58,10 +56,9 @@ void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int he
 		ConvertToGrayscaleKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_imgBGR + offsetBGR, d_imgGrayscale + offsetGray, width, currentChunkHeight, channels);
 		cudaMemcpyAsync(h_imgGrayscale + offsetGray, d_imgGrayscale + offsetGray, copiedDataSizeGray, cudaMemcpyDeviceToHost, streams[i]);
 	}
-	for (int i = 0; i < NSTREAMS; ++i)
+	for (int i = 0; i < nStreams; ++i)
 	{
 		cudaStreamSynchronize(streams[i]);
-		cudaStreamDestroy(streams[i]);
 	}
 	
 	/*cudaMemcpy(d_imgBGR, h_imgBGR, sizeof(unsigned char) * (width * height * channels), cudaMemcpyHostToDevice);

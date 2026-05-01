@@ -18,7 +18,7 @@ __global__ void ComputeSecondMomentMatrixKernel(const float* Ix, const float* Iy
 	}
 }
 
-void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ixx, float* h_Iyy, float* h_Ixy, int width, int height)
+void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ixx, float* h_Iyy, float* h_Ixy, int width, int height, cudaStream_t* streams, int nStreams)
 {
 	float* d_Ix, * d_Iy, * d_Ixx, * d_Iyy, * d_Ixy;
 
@@ -28,12 +28,10 @@ void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ix
 	cudaMalloc(&d_Iyy, sizeof(float) * width * height);
 	cudaMalloc(&d_Ixy, sizeof(float) * width * height);
 
-	constexpr int NSTREAMS = 4, SHARED_MEM_SIZE = 0;
-	cudaStream_t streams[NSTREAMS];
-	const int chunkHeight = (height + (NSTREAMS - 1)) / NSTREAMS;
-	for (int i = 0; i < NSTREAMS; ++i)
+	constexpr int SHARED_MEM_SIZE = 0;
+	const int chunkHeight = (height + (nStreams - 1)) / nStreams;
+	for (int i = 0; i < nStreams; ++i)
 	{
-		cudaStreamCreate(&streams[i]);
 		
 		const int startRow = i * chunkHeight;
 		const int endRow = std::min((i + 1) * chunkHeight, height);
@@ -53,10 +51,9 @@ void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ix
 		cudaMemcpyAsync(h_Ixy + offset, d_Ixy + offset, copiedDataSize, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	for (int i = 0; i < NSTREAMS; ++i)
+	for (int i = 0; i < nStreams; ++i)
 	{
 		cudaStreamSynchronize(streams[i]);
-		cudaStreamDestroy(streams[i]);
 	}
 
 	cudaFree(d_Ix);

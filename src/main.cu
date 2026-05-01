@@ -78,6 +78,14 @@ int main(int argc, char** argv)
 
     unsigned int frameIndex = 0;
 
+    constexpr int STREAM_COUNT = 4;
+    cudaStream_t streams[STREAM_COUNT];
+
+    for (int i = 0; i < STREAM_COUNT; ++i)
+    {
+        cudaStreamCreate(&streams[i]);
+    }
+
     while (cap.read(frame))
     {
         if (frame.empty())
@@ -92,15 +100,15 @@ int main(int argc, char** argv)
         const unsigned channels = frame.channels();
         unsigned int h_cornerCount = 0;
 
-        ConvertBGRToGray(frame, grayFrame, width, height, channels);
+        ConvertBGRToGray(frame, grayFrame, width, height, channels, streams, STREAM_COUNT);
 
         ComputeImageGradients(grayFrame, h_Ix, h_Iy, filterSize, cv::BORDER_REPLICATE, width, height);
 
-        ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height);
+        ComputeSecondMomentMatrix(h_Ix, h_Iy, h_Ixx, h_Iyy, h_Ixy, width, height, streams, STREAM_COUNT);
 
         ApplyGaussianSmoothing(h_Ixx, h_Iyy, h_Ixy, h_Sxx, h_Syy, h_Sxy, width, height, filterSize);
 
-        CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, h_harrisResponse, width, height);
+        CalculateHarrisResponse(h_Sxx, h_Syy, h_Sxy, h_harrisResponse, width, height, streams, STREAM_COUNT);
 
         FindCorners(h_harrisResponse, width, height, h_corners, h_cornerCount);
 
@@ -139,6 +147,11 @@ int main(int argc, char** argv)
 
     cudaFreeHost(h_harrisResponse);
     cudaFreeHost(h_corners);
+
+    for (int i = 0; i < STREAM_COUNT; ++i)
+    {
+        cudaStreamDestroy(streams[i]);
+    }
 
     cap.release();
     writer.release();

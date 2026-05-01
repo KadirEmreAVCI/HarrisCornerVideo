@@ -1,4 +1,5 @@
 #pragma once
+#include <cuda_runtime.h>
 
 void ComputeSecondMomentMatrix(	const float* h_Ix, 
 								const float* h_Iy, 
@@ -6,4 +7,6 @@ void ComputeSecondMomentMatrix(	const float* h_Ix,
 								float* h_Iyy, 
 								float* h_Ixy, 
 								int width, 
-								int height);
+								int height, 
+								cudaStream_t* streams,
+								int nStreams);

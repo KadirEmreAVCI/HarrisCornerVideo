@@ -23,7 +23,7 @@ __global__ void CalculateHarrisResponseKernel(const float* Sxx, const float* Syy
 	}
 }
 
-void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float* h_Sxy, float* h_harrisResponse, int width, int height)
+void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float* h_Sxy, float* h_harrisResponse, int width, int height, cudaStream_t* streams, int nStreams)
 {
 	constexpr float h_k = 0.04;
 	cudaMemcpyToSymbol(c_k, &h_k, sizeof(float));
@@ -34,11 +34,9 @@ void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float
 	cudaMalloc(&d_Sxy, sizeof(float) * width * height);
 	cudaMalloc(&d_harrisResponse, sizeof(float) * width * height);
 
-	constexpr int NSTREAMS = 4;
-	cudaStream_t streams[NSTREAMS];
-	const int chunkHeight = (height + (NSTREAMS - 1)) / NSTREAMS;
+	const int chunkHeight = (height + (nStreams - 1)) / nStreams;
 	constexpr dim3 block{ 16, 16 };
-	for (int i = 0; i < NSTREAMS; ++i)
+	for (int i = 0; i < nStreams; ++i)
 	{
 
 		const int startRow = i * chunkHeight;
@@ -46,7 +44,6 @@ void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float
 		const int currentChunkHeight = endRow - startRow;
 		const int offset = startRow * width;
 		
-		cudaStreamCreate(&streams[i]);
 
 		cudaMemcpyAsync(d_Sxx + offset, h_Sxx + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyHostToDevice, streams[i]);
 		cudaMemcpyAsync(d_Syy + offset, h_Syy + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyHostToDevice, streams[i]);
@@ -59,10 +56,9 @@ void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float
 		cudaMemcpyAsync(h_harrisResponse + offset, d_harrisResponse + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	for (int i = 0; i < NSTREAMS; ++i)
+	for (int i = 0; i < nStreams; ++i)
 	{
 		cudaStreamSynchronize(streams[i]);
-		cudaStreamDestroy(streams[i]);
 	}
 
 	cudaFree(d_Sxx);
