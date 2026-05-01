@@ -7,17 +7,30 @@
   },
   "configurePresets": [
     {
-      "name": "vs2026-debug",
-      "displayName": "VS2026 Debug",
-      "generator": "Visual Studio 18 2026",
-      "binaryDir": "${sourceDir}/build/vs2026-debug",
-      "architecture": {
-        "value": "x64"
-      },
-      "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "20",
-        "OpenCV_DIR": "D:/devtools/opencv-install-vs2026/x64/vc18/lib"
-      }
+        "name": "vs2026-debug",
+        "displayName": "VS2026 Debug",
+        "generator": "Visual Studio 18 2026",
+        "binaryDir": "${sourceDir}/build/vs2026-debug",
+        "architecture": {
+            "value": "x64"
+        },
+        "cacheVariables": {
+            "CMAKE_CXX_STANDARD": "20",
+            "OpenCV_DIR": "D:/devtools/opencv-install-vs2026/x64/vc18/lib"
+        }
+    },
+    {
+        "name": "vs2026-release",
+        "displayName": "VS2026 Release",
+        "generator": "Visual Studio 18 2026",
+        "binaryDir": "${sourceDir}/build/vs2026-release",
+        "architecture": {
+            "value": "x64"
+        },
+        "cacheVariables": {
+            "CMAKE_CXX_STANDARD": "20",
+            "OpenCV_DIR": "D:/devtools/opencv-install-vs2026/x64/vc18/lib"
+        }
     },
     {
       "name": "linux-debug",
@@ -44,9 +57,14 @@
   ],
   "buildPresets": [
     {
-      "name": "build-vs2026-debug",
-      "configurePreset": "vs2026-debug",
-      "configuration": "Debug"
+        "name": "build-vs2026-debug",
+        "configurePreset": "vs2026-debug",
+        "configuration": "Debug"
+    },
+    {
+        "name": "build-vs2026-release",
+        "configurePreset": "vs2026-release",
+        "configuration": "Release"
     },
     {
       "name": "build-linux-debug",
