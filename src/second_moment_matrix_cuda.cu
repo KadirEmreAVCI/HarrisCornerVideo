@@ -51,10 +51,7 @@ void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ix
 		cudaMemcpyAsync(h_Ixy + offset, d_Ixy + offset, copiedDataSize, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	for (int i = 0; i < nStreams; ++i)
-	{
-		cudaStreamSynchronize(streams[i]);
-	}
+	cudaDeviceSynchronize();
 
 	cudaFree(d_Ix);
 	cudaFree(d_Iy);

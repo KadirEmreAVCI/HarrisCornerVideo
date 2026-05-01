@@ -56,10 +56,7 @@ void ConvertBGRToGray(const cv::Mat& imgBGR, cv::Mat& imgGray, int width, int he
 		ConvertToGrayscaleKernel << <grid, block, SHARED_MEM_SIZE, streams[i] >> > (d_imgBGR + offsetBGR, d_imgGrayscale + offsetGray, width, currentChunkHeight, channels);
 		cudaMemcpyAsync(h_imgGrayscale + offsetGray, d_imgGrayscale + offsetGray, copiedDataSizeGray, cudaMemcpyDeviceToHost, streams[i]);
 	}
-	for (int i = 0; i < nStreams; ++i)
-	{
-		cudaStreamSynchronize(streams[i]);
-	}
+	cudaDeviceSynchronize();
 	
 	/*cudaMemcpy(d_imgBGR, h_imgBGR, sizeof(unsigned char) * (width * height * channels), cudaMemcpyHostToDevice);
 
