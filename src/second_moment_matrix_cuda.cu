@@ -32,26 +32,55 @@ void ComputeSecondMomentMatrix(const float* h_Ix, const float* h_Iy, float* h_Ix
 	const int chunkHeight = (height + (nStreams - 1)) / nStreams;
 	for (int i = 0; i < nStreams; ++i)
 	{
-		
 		const int startRow = i * chunkHeight;
 		const int endRow = std::min((i + 1) * chunkHeight, height);
 		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
 		const int offset = startRow * width;
 		const size_t copiedDataSize = sizeof(float) * currentChunkHeight * width;
 
 		cudaMemcpyAsync(d_Ix + offset, h_Ix + offset, copiedDataSize, cudaMemcpyHostToDevice, streams[i]);
 		cudaMemcpyAsync(d_Iy + offset, h_Iy + offset, copiedDataSize, cudaMemcpyHostToDevice, streams[i]);
+	}
 
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+		const int offset = startRow * width;
 		const dim3 block(16, 16);
 		const dim3 grid(((width + block.x - 1) / block.x), ((currentChunkHeight + block.y - 1) / block.y));
 		ComputeSecondMomentMatrixKernel << <grid, block, SHARED_MEM_SIZE, streams[i]>> > (d_Ix + offset, d_Iy + offset, d_Ixx + offset, d_Iyy + offset, d_Ixy + offset, width, currentChunkHeight);
+	}
 
+	for (int i = 0; i < nStreams; ++i)
+	{
+		const int startRow = i * chunkHeight;
+		const int endRow = std::min((i + 1) * chunkHeight, height);
+		const int currentChunkHeight = endRow - startRow;
+		if (currentChunkHeight <= 0)
+		{
+			continue;
+		}
+		const int offset = startRow * width;
+		const size_t copiedDataSize = sizeof(float) * currentChunkHeight * width;
 		cudaMemcpyAsync(h_Ixx + offset, d_Ixx + offset, copiedDataSize, cudaMemcpyDeviceToHost, streams[i]);
 		cudaMemcpyAsync(h_Iyy + offset, d_Iyy + offset, copiedDataSize, cudaMemcpyDeviceToHost, streams[i]);
 		cudaMemcpyAsync(h_Ixy + offset, d_Ixy + offset, copiedDataSize, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	cudaDeviceSynchronize();
+	for (int i = 0; i < nStreams; ++i)
+	{
+		cudaStreamSynchronize(streams[i]);
+	}
 
 	cudaFree(d_Ix);
 	cudaFree(d_Iy);
