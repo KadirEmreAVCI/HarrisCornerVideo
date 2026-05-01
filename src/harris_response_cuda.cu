@@ -56,10 +56,7 @@ void CalculateHarrisResponse(const float* h_Sxx, const float* h_Syy, const float
 		cudaMemcpyAsync(h_harrisResponse + offset, d_harrisResponse + offset, sizeof(float) * width * currentChunkHeight, cudaMemcpyDeviceToHost, streams[i]);
 	}
 
-	for (int i = 0; i < nStreams; ++i)
-	{
-		cudaStreamSynchronize(streams[i]);
-	}
+	cudaDeviceSynchronize();
 
 	cudaFree(d_Sxx);
 	cudaFree(d_Syy);
