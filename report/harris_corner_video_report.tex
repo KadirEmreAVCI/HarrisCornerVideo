@@ -74,7 +74,7 @@ Table~\ref{tab:lit-comparison} summarizes representative differences between fou
 \toprule
 \textbf{Study / Method} & \textbf{Primary focus} & \textbf{Typical trade-off} & \textbf{Relation to this project} \\
 \midrule
-Harris--Stephens~\cite{harris1988} & Corner response from second-moment structure tensor. & Good efficiency and interpretability; limited scale invariance. & Core mathematical basis used in our CUDA frame pipeline. \\
+Harris--Stephens~\cite{harris1988} & Corner response from second-moment structure tensor. & Good efficiency and interpretability; limited scale invariance. & Core mathematical basis used in the CUDA frame pipeline. \\
 Shi--Tomasi~\cite{shi1994} & Tracking-oriented corner quality criterion (minimum eigenvalue). & Often stable for tracking; still classical local-feature assumptions. & Alternative corner scoring reference; could be used as an ablation baseline. \\
 SIFT~\cite{lowe2004} & Scale-invariant keypoint detection + high-dimensional descriptors. & Strong robustness, but heavier computation and descriptor cost. & Included as a robustness-oriented reference; not selected for low-latency target. \\
 SURF~\cite{bay2008} & Faster approximation to SIFT using integral-image ideas. & Better speed than SIFT; still descriptor-heavy relative to Harris-only detection. & Useful comparison for speed/robustness balance, but not as lightweight as Harris response-only pipeline. \\
@@ -220,39 +220,54 @@ Profiling tooling is defined at a high level in implementation notes: \texttt{ns
     \item \textbf{Performance profiling plan:} collect runtime evidence with NVIDIA Nsight tools; detailed profiler outputs and interpretation are reported in the Experimental Results section.
 \end{itemize}
 
-\section{Experimental Plan (Results Pending)}
-This section is intentionally designed to be completed after profiling and quality experiments.
+\section{Experimental Results}
+This section reports the Nsight Systems observations collected from the CUDA Harris pipeline. The analysis focuses on three timeline views: (i) kernel distribution and transfer share, (ii) full-frame execution structure, and (iii) stream-enabled non-filtering stages.
 
-\subsection{Planned Metrics}
-\begin{itemize}
-    \item Runtime per frame (ms) and throughput (FPS) at multiple resolutions.
-    \item End-to-end speedup versus a CPU baseline implementation.
-    \item Detailed Nsight-based analysis in results: kernel metrics from \texttt{nsight-compute} and overlap/timeline evidence from \texttt{nsight-systems}.
-    \item Temporal consistency of detected corner counts.
-    \item Optional repeatability/localization quality on benchmark image pairs.
-\end{itemize}
+\subsection{Kernel Execution Distribution and Transfer Share}
+Figure~\ref{fig:kernel-distribution} summarizes execution-time distribution for one representative frame. In this view, the default stream accounts for approximately \textbf{51.6\%} of the GPU activity, while four auxiliary streams (\#13--\#16) each contribute nearly equal shares (\textbf{12.0--12.2\%} each), giving an aggregate non-default share of about \textbf{48.4\%}. This indicates that non-default stream work is relatively well balanced after task partitioning.
 
-\subsection{Planned Comparisons}
-\begin{itemize}
-    \item Harris GPU vs Harris CPU (same thresholds and smoothing settings).
-    \item Harris GPU vs ORB/FAST detection runtime (if integration is available).
-    \item Sensitivity to scene texture, motion blur, and illumination changes.
-\end{itemize}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{screenshots/kernel_distribution.png}
+\caption{Nsight Systems kernel/transfer distribution for a representative frame.}
+\label{fig:kernel-distribution}
+\end{figure}
 
-\subsection{Planned Ablations}
-\begin{itemize}
-    \item Gaussian kernel size impact on noise robustness vs runtime.
-    \item Harris threshold impact on precision-recall-like behavior.
-    \item Resolution scaling behavior and memory footprint trends.
-\end{itemize}
+The observed distribution is consistent with the execution model. A higher default-stream share is expected because several stages remain serial due to stage dependencies, and filtering-related operations are intentionally not fully chunked across streams. The near-equal non-default stream shares are also consistent with the stream-enabled non-filtering path, where chunk sizes are selected to promote balanced overlap.
 
-\textbf{Missing information to add:}
-\begin{itemize}
-    \item GPU and CPU hardware/software configuration table.
-    \item Dataset/video characteristics (resolution, duration, scene classes).
-    \item Reproducible protocol (warm-up, run count, averaging, variance reporting).
-    \item Whether timings are kernel-only or include host-device transfer and rendering.
-\end{itemize}
+Within kernel execution, the \texttt{ApplyingGaussianSmoothing} kernel occupies approximately \textbf{40\%} of total kernel time and represents the dominant compute hotspot in the profile. This is expected because Gaussian smoothing is a neighborhood-based convolution over full-frame second-moment buffers, leading to higher per-pixel memory traffic and arithmetic work than element-wise stages such as grayscale conversion, tensor product formation, or Harris response evaluation.
+
+The timeline is memory-transfer heavy relative to pure compute, which is consistent with the current design. Transfer activity is amplified by host-side padding and staging operations performed before filtering kernels are launched. In this implementation, padding is created on the CPU using replicated borders, and padded matrices are subsequently copied to the device. Therefore, the measured transfer share reflects both unavoidable host-device communication and CPU-prepared padded-buffer workflow decisions, not only kernel inefficiency.
+
+\subsection{Full-Frame Timeline Interpretation}
+Figure~\ref{fig:full-frame} presents a full-frame timeline view from Nsight Systems. The shown interval corresponds to one frame among many in the input video stream; the same stage sequence is repeated for each frame until the stream ends.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{screenshots/frame.png}
+\caption{Full-frame Nsight Systems timeline view (one frame instance within the full video).}
+\label{fig:full-frame}
+\end{figure}
+
+The CUDA API activity is visible in the lower part of the timeline (last row region in the profiler layout), where asynchronous copies, synchronizations, and launch calls appear as host-side API events. Above these API rows, GPU execution lanes show actual device work. Color changes in the timeline correspond to different categories of CUDA operations (e.g., memory operations versus kernel launches), helping identify where control, transfer, and compute phases alternate during a frame.
+
+Even in this frame-level snapshot, overlap opportunities can be observed: some stages are initiated with stream-based asynchronous CUDA calls, allowing command submission and device execution to proceed without strict global serialization. This behavior becomes clearer in the next subsection.
+
+\subsection{Stream Concurrency in Non-Filtering Stages}
+Figure~\ref{fig:stream-stage} details the stream-enabled part of the pipeline for non-filtering stages, highlighting one of the main strengths of this project.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{screenshots/compute_second_moment_matrix_stage.png}
+\caption{Detailed Nsight Systems view of stream usage in a non-filtering stage.}
+\label{fig:stream-stage}
+\end{figure}
+
+To expose GPU-side parallelism clearly in Nsight Systems, memory copies and kernel launches were reorganized from a single loop into three distinct loops: one loop for batched/partitioned \texttt{cudaMemcpyAsync} submissions, one loop for kernel launches, and one loop for post-launch synchronization/collection. This restructuring reduces host-side interleaving that can hide overlap patterns in the timeline and makes concurrent execution across streams easier to observe.
+
+The resulting trace shows that independent chunks in non-filtering stages can progress concurrently: while one chunk is executing on device, another chunk transfer can already be in flight. This improves pipeline utilization by overlapping communication and computation. As expected, filtering stages were not moved to the same chunked-stream strategy because neighborhood dependencies and padding-border handling make safe partitioning more constrained than point-wise or element-wise stages.
+
+Overall, Nsight Systems confirms that stream-based asynchronous design is effective for independent non-filtering operations, while transfer-heavy behavior is primarily explained by CPU-side padded-buffer preparation required by filtering stages.
 
 \section{Threats to Validity and Limitations}
 Potential limitations include sensitivity to weak-texture regions, threshold dependence, and possible corner instability under severe blur or abrupt lighting changes. Experimental validity may also be affected by non-deterministic GPU scheduling noise, video codec variability, and inconsistent CPU frequency scaling.
