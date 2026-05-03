@@ -221,9 +221,9 @@ Profiling tooling is defined at a high level in implementation notes: \texttt{ns
 \end{itemize}
 
 \section{Experimental Results}
-This section reports the Nsight Systems observations collected from the CUDA Harris pipeline. The analysis focuses on three timeline views: (i) kernel distribution and transfer share, (ii) full-frame execution structure, and (iii) stream-enabled non-filtering stages.
+This section reports the Nsight Systems observations collected from the CUDA Harris pipeline. The analysis focuses on three timeline views: (i) kernel execution and stream distribution, (ii) full-frame execution structure, and (iii) stream-enabled non-filtering stages.
 
-\subsection{Kernel Execution Distribution and Transfer Share}
+\subsection{Kernel Execution and Stream Distribution}
 Figure~\ref{fig:kernel-distribution} summarizes execution-time distribution for one representative frame. In this view, the default stream accounts for approximately \textbf{51.6\%} of the GPU activity, while four auxiliary streams (\#13--\#16) each contribute nearly equal shares (\textbf{12.0--12.2\%} each), giving an aggregate non-default share of about \textbf{48.4\%}. This indicates that non-default stream work is relatively well balanced after task partitioning.
 
 \begin{figure}[t]
