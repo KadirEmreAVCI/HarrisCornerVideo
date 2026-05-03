@@ -246,10 +246,11 @@ Within kernel execution, the \texttt{ApplyingGaussianSmoothing} kernel occupies 
 
 The timeline is memory-transfer heavy relative to pure compute, which is consistent with the current design. Transfer activity is amplified by host-side padding and staging operations performed before filtering kernels are launched. In this implementation, padding is created on the CPU using replicated borders, and padded matrices are subsequently copied to the device. Therefore, the measured transfer share reflects both unavoidable host-device communication and CPU-prepared padded-buffer workflow decisions, not only kernel inefficiency.
 
+\FloatBarrier
 \subsection{Full-Frame Timeline Interpretation}
 Figure~\ref{fig:full-frame} presents a full-frame timeline view from Nsight Systems. The shown interval corresponds to one frame among many in the input video stream; the same stage sequence is repeated for each frame until the stream ends.
 
-\begin{figure*}[!t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{screenshots/frame.png}
 \caption{Full-frame Nsight Systems timeline view (one frame instance within the full video).}
@@ -260,10 +261,11 @@ The CUDA API activity is visible in the lower part of the timeline (last row reg
 
 Even in this frame-level snapshot, overlap opportunities can be observed: some stages are initiated with stream-based asynchronous CUDA calls, allowing command submission and device execution to proceed without strict global serialization. This behavior becomes clearer in the next subsection.
 
+\FloatBarrier
 \subsection{Stream Concurrency in Non-Filtering Stages}
 Figure~\ref{fig:stream-stage} details the stream-enabled part of the pipeline for non-filtering stages, highlighting one of the main strengths of this project.
 
-\begin{figure*}[!t]
+\begin{figure*}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{screenshots/compute_second_moment_matrix_stage.png}
 \caption{Detailed Nsight Systems view of stream usage in a non-filtering stage.}
