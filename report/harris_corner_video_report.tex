@@ -226,19 +226,19 @@ This section reports the Nsight Systems observations collected from the CUDA Har
 \subsection{Kernel Execution and Stream Distribution}
 Figure~\ref{fig:kernel-distribution} summarizes execution-time distribution for one representative frame. In this view, the default stream accounts for approximately \textbf{51.6\%} of the GPU activity, while four auxiliary streams (\#13--\#16) each contribute nearly equal shares (\textbf{12.0--12.2\%} each), giving an aggregate non-default share of about \textbf{48.4\%}. This indicates that non-default stream work is relatively well balanced after task partitioning.
 
-\begin{figure*}[b]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.95\textwidth]{screenshots/kernel_distribution.png}
+\includegraphics[width=\linewidth]{screenshots/kernel_distribution.png}
 \caption{Nsight Systems kernel/transfer distribution for a representative frame.}
 \label{fig:kernel-distribution}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[b]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.95\textwidth]{screenshots/stream_distribution.png}
+\includegraphics[width=\linewidth]{screenshots/stream_distribution.png}
 \caption{Nsight Systems stream-level distribution across the default and auxiliary streams.}
 \label{fig:stream-distribution}
-\end{figure*}
+\end{figure}
 
 The observed distribution is consistent with the execution model. A higher default-stream share is expected because several stages remain serial due to stage dependencies, and filtering-related operations are intentionally not fully chunked across streams. The near-equal non-default stream shares are also consistent with the stream-enabled non-filtering path, where chunk sizes are selected to promote balanced overlap.
 
