@@ -233,6 +233,13 @@ Figure~\ref{fig:kernel-distribution} summarizes execution-time distribution for 
 \label{fig:kernel-distribution}
 \end{figure}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{screenshots/stream_distribution.png}
+\caption{Nsight Systems stream-level distribution across the default and auxiliary streams.}
+\label{fig:stream-distribution}
+\end{figure}
+
 The observed distribution is consistent with the execution model. A higher default-stream share is expected because several stages remain serial due to stage dependencies, and filtering-related operations are intentionally not fully chunked across streams. The near-equal non-default stream shares are also consistent with the stream-enabled non-filtering path, where chunk sizes are selected to promote balanced overlap.
 
 Within kernel execution, the \texttt{ApplyingGaussianSmoothing} kernel occupies approximately \textbf{40\%} of total kernel time and represents the dominant compute hotspot in the profile. This is expected because Gaussian smoothing is a neighborhood-based convolution over full-frame second-moment buffers, leading to higher per-pixel memory traffic and arithmetic work than element-wise stages such as grayscale conversion, tensor product formation, or Harris response evaluation.
