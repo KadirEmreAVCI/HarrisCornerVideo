@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex harris_corner_video_report"] 1777318030.95554 "harris_corner_video_report.aux" "harris_corner_video_report.bbl" "harris_corner_video_report" 1777318032.38823 0
-  "./references.bib" 1776926044 1399 f2267ee8798b7b2fb6581712f01324df ""
+["bibtex harris_corner_video_report"] 1777913572.53027 "harris_corner_video_report.aux" "harris_corner_video_report.bbl" "harris_corner_video_report" 1777913574.16425 0
+  "./references.bib" 1777640585 1399 f2267ee8798b7b2fb6581712f01324df ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "harris_corner_video_report.aux" 1777318031 4506 1d0c91543bd4124b929355934f4c836f "pdflatex"
+  "harris_corner_video_report.aux" 1777913573 5688 68155aa5ae8fac6f8a252a83280524d6 "pdflatex"
   (generated)
   "harris_corner_video_report.bbl"
   "harris_corner_video_report.blg"
   (rewritten before read)
-["pdflatex"] 1777318031.21503 "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" "harris_corner_video_report.pdf" "harris_corner_video_report" 1777318032.38867 0
-  "C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1776935695 82507 a9eef8696c92627b87e9975edea03b2a ""
+["pdflatex"] 1777913572.78054 "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" "harris_corner_video_report.pdf" "harris_corner_video_report" 1777913574.16483 0
+  "C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1777836203 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/User/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1772564370 13333002 e0439501fa47615a0d75bbc86ad4aecf ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136765053 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -135,6 +135,7 @@
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/booktabs/booktabs.sty" 1579093635 6253 f1cb470c9199e7110a27851508ed7a5c ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/cite/cite.sty" 1425353482 26218 19edeff8cdc2bcb704e8051dc55eb5a7 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1623003186 13886 d1306dcf79a944f6988e688c1785f9ce ""
+  "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/float/float.sty" 1469023953 6916 16d2656a1984957e674b149555f1ea1d ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/graphics-cfg/color.cfg" 1465894292 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/graphics-cfg/graphics.cfg" 1465894292 1224 978390e9c2234eab29404bc21b268d1e ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/graphics-def/pdftex.def" 1762694372 19626 23e2822b9b2b5005f4c549ca98b9334d ""
@@ -162,10 +163,15 @@
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/tools/tabularx.sty" 1761901070 7243 a2c17f18e2c9b702b84fad03d5f9c78b ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" 1777317955 20888 acb64233419c0090eadb6592a2875602 ""
-  "harris_corner_video_report.aux" 1777318031 4506 1d0c91543bd4124b929355934f4c836f "pdflatex"
-  "harris_corner_video_report.bbl" 1777318031 1886 f21c2938cf2aa86b0474b1a659346b2c "bibtex harris_corner_video_report"
-  "harris_corner_video_report.tex" 1777317955 20888 acb64233419c0090eadb6592a2875602 ""
+  "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" 1777913485 25724 e57c61f6fc472747800104b79fd0a677 ""
+  "harris_corner_video_report.aux" 1777913573 5688 68155aa5ae8fac6f8a252a83280524d6 "pdflatex"
+  "harris_corner_video_report.bbl" 1777913572 1886 f21c2938cf2aa86b0474b1a659346b2c "bibtex harris_corner_video_report"
+  "harris_corner_video_report.tex" 1777913485 25724 e57c61f6fc472747800104b79fd0a677 ""
+  "screenshots/compute_second_moment_matrix_stage.png" 1777830788 55772 45db9f99728d2e0818ad835ff8eeffaa ""
+  "screenshots/edge_corners_padding.png" 1777910971 325460 8a2926ac4e58891854d6027c91162ae5 ""
+  "screenshots/frame.png" 1777830788 35553 26eeab2501639ed83c59b500218f8a91 ""
+  "screenshots/kernel_distribution.png" 1777833397 19384 2f78dea34bc37d7baaffd9ced29f07e8 ""
+  "screenshots/stream_distribution.png" 1777833397 16177 c0afb37d27b0421cdb6eef8cc9fac6c1 ""
   (generated)
   "harris_corner_video_report.aux"
   "harris_corner_video_report.log"

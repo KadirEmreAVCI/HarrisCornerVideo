@@ -184,7 +184,13 @@ Let an input RGB frame be denoted by channels $R(x,y)$, $G(x,y)$, and $B(x,y)$. 
 I(x,y) = 0.299\,R(x,y) + 0.587\,G(x,y) + 0.114\,B(x,y).
 \end{equation}
 
-For filtering-oriented stages, padding is applied on the CPU side (OpenCV \texttt{copyMakeBorder}) to create an extended image $\tilde{I}(x,y)$ so neighborhood reads remain valid at boundaries. The selected padding type is replicate border (\texttt{cv::BORDER\_REPLICATE}), which duplicates edge pixels into the halo region before data transfer to the device. This choice is preferred over applying no padding because valid convolutions without padding would shrink the effective output domain (or force edge-pixel discard), reducing corner coverage near frame borders and making stage outputs less directly aligned with the original frame size. Because this replicated halo is materialized on the host for each matrix/image input, transfers are performed per padded buffer and not as a single monolithic \texttt{cudaMemcpy} that would otherwise assume one already-contiguous source layout for all operands. Using this padded representation, derivative and smoothing operations follow standard local convolution forms:
+For filtering-oriented stages, padding is applied on the CPU side (OpenCV \texttt{copyMakeBorder}) to create an extended image $\tilde{I}(x,y)$ so neighborhood reads remain valid at boundaries. The selected padding type is replicate border (\texttt{cv::BORDER\_REPLICATE}), which duplicates edge pixels into the halo region before data transfer to the device. Figure~\ref{fig:edge-corners-padding} shows a representative detection frame where multiple candidate corners appear directly on or very near the image borders (especially the bottom and lateral boundaries). This visual evidence motivates border padding: without padding, neighborhood filters at those boundary pixels would either be undefined or evaluated on truncated windows, often shifting maxima inward or discarding true border corners entirely. This choice is preferred over applying no padding because valid convolutions without padding would shrink the effective output domain (or force edge-pixel discard), reducing corner coverage near frame borders and making stage outputs less directly aligned with the original frame size. Because this replicated halo is materialized on the host for each matrix/image input, transfers are performed per padded buffer and not as a single monolithic \texttt{cudaMemcpy} that would otherwise assume one already-contiguous source layout for all operands. Using this padded representation, derivative and smoothing operations follow standard local convolution forms:
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{screenshots/edge_corners_padding.png}
+\caption{Detected Harris corners near image edges.}
+\label{fig:edge-corners-padding}
+\end{figure}
 \begin{equation}
 I_x = K_x * \tilde{I}, \qquad I_y = K_y * \tilde{I},
 \end{equation}
