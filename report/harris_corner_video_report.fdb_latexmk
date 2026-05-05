@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex harris_corner_video_report"] 1778011108.45481 "harris_corner_video_report.aux" "harris_corner_video_report.bbl" "harris_corner_video_report" 1778011335.91135 0
+["bibtex harris_corner_video_report"] 1778015769.00062 "harris_corner_video_report.aux" "harris_corner_video_report.bbl" "harris_corner_video_report" 1778015770.76589 0
   "./references.bib" 1777640585 1399 f2267ee8798b7b2fb6581712f01324df ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "harris_corner_video_report.aux" 1778011335 6196 fb2f8c72d3c6df6d38230af8f31b1781 "pdflatex"
+  "harris_corner_video_report.aux" 1778015770 6181 5b3a535313712bc9582c7a583ef2594f "pdflatex"
   (generated)
   "harris_corner_video_report.bbl"
   "harris_corner_video_report.blg"
   (rewritten before read)
-["pdflatex"] 1778011334.28391 "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" "harris_corner_video_report.pdf" "harris_corner_video_report" 1778011335.91175 0
+["pdflatex"] 1778015769.31849 "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" "harris_corner_video_report.pdf" "harris_corner_video_report" 1778015770.76631 0
   "C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1777836203 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/User/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1772564370 13333002 e0439501fa47615a0d75bbc86ad4aecf ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -51,7 +51,6 @@
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1247596667 32762 7fee39e011c23b3589931effd97b9702 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1247596667 32726 39f0f9e62e84beb801509898a605dbd5 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
-  "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247596667 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb" 1136846148 45758 19968a0990191524e34e1994d4a31cb6 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb" 1136846148 44404 ea3d9c0311883914133975dd62a9185c ""
@@ -165,10 +164,10 @@
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/tools/tabularx.sty" 1761901070 7243 a2c17f18e2c9b702b84fad03d5f9c78b ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "D:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" 1778011333 28759 dafbce073776d833fdf1af90145e4b44 ""
-  "harris_corner_video_report.aux" 1778011335 6196 fb2f8c72d3c6df6d38230af8f31b1781 "pdflatex"
-  "harris_corner_video_report.bbl" 1778011108 1886 f21c2938cf2aa86b0474b1a659346b2c "bibtex harris_corner_video_report"
-  "harris_corner_video_report.tex" 1778011333 28759 dafbce073776d833fdf1af90145e4b44 ""
+  "c:/Users/User/Workspaces/VisualStudio/VS2026/HarrisCornerVideo/report/harris_corner_video_report.tex" 1778015766 31236 e890fd433222e6d22ae354f2f346d221 ""
+  "harris_corner_video_report.aux" 1778015770 6181 5b3a535313712bc9582c7a583ef2594f "pdflatex"
+  "harris_corner_video_report.bbl" 1778015769 1886 f21c2938cf2aa86b0474b1a659346b2c "bibtex harris_corner_video_report"
+  "harris_corner_video_report.tex" 1778015766 31236 e890fd433222e6d22ae354f2f346d221 ""
   "screenshots/compute_second_moment_matrix_stage.png" 1778008801 55772 45db9f99728d2e0818ad835ff8eeffaa ""
   "screenshots/edge_corners_padding.png" 1778008801 325460 8a2926ac4e58891854d6027c91162ae5 ""
   "screenshots/frame.png" 1778008801 35553 26eeab2501639ed83c59b500218f8a91 ""

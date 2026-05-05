@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.3)  5 MAY 2026 23:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.3)  6 MAY 2026 00:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -497,6 +497,14 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (D:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
+LaTeX Font Info:    Trying to load font information for U+msa on input line 44.
+ (D:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
+ (D:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 Underfull \hbox (badness 2726) in paragraph at lines 49--50
 \OT1/ptm/m/n/10 cri-te-rion that iden-ti-fies points with sig-nif-i-cant in-ten-sity
  []
@@ -506,7 +514,7 @@ Underfull \hbox (badness 1762) in paragraph at lines 59--60
 []\OT1/ptm/m/n/10 ORB com-bines ori-ented FAST de-tec-tion with ro-tated
  []
 
-(D:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd) (D:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd)
+
 Overfull \hbox (6.71906pt too wide) in alignment at lines 85--85
 [][][][] 
  []
@@ -522,58 +530,72 @@ File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
 (Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 163.
  [2]
-<screenshots/edge_corners_padding.png, id=19, 641.9985pt x 383.031pt>
+<screenshots/edge_corners_padding.png, id=21, 641.9985pt x 383.031pt>
 File: screenshots/edge_corners_padding.png Graphic file (type png)
 <use screenshots/edge_corners_padding.png>
 Package pdftex.def Info: screenshots/edge_corners_padding.png  used on input line 190.
 (pdftex.def)             Requested size: 252.0pt x 150.35168pt.
  [3 <./screenshots/edge_corners_padding.png>]
+Underfull \vbox (badness 5667) has occurred while \output is active []
+
 <screenshots/kernel_distribution.png, id=31, 251.7405pt x 239.09325pt>
 File: screenshots/kernel_distribution.png Graphic file (type png)
 <use screenshots/kernel_distribution.png>
-Package pdftex.def Info: screenshots/kernel_distribution.png  used on input line 238.
+Package pdftex.def Info: screenshots/kernel_distribution.png  used on input line 235.
 (pdftex.def)             Requested size: 252.0pt x 239.34438pt.
 <screenshots/stream_distribution.png, id=32, 232.4685pt x 217.41225pt>
 File: screenshots/stream_distribution.png Graphic file (type png)
 <use screenshots/stream_distribution.png>
-Package pdftex.def Info: screenshots/stream_distribution.png  used on input line 245.
+Package pdftex.def Info: screenshots/stream_distribution.png  used on input line 242.
 (pdftex.def)             Requested size: 252.0pt x 235.69078pt.
- [4 <./screenshots/kernel_distribution.png> <./screenshots/stream_distribution.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 252--253
+
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
 []\OT1/ptm/m/n/10 Within ker-nel ex-e-cu-tion, the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 252--253
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
 \OT1/pcr/m/n/10 ApplyingGaussianSmoothing \OT1/ptm/m/n/10 ker-nel oc-cu-pies
  []
 
 
-Underfull \hbox (badness 1509) in paragraph at lines 252--253
+Underfull \hbox (badness 1509) in paragraph at lines 249--250
 \OT1/ptm/m/n/10 ap-prox-i-mately \OT1/ptm/b/n/10 40% \OT1/ptm/m/n/10 of to-tal ker-nel time and rep-re-sents
  []
 
 
-Underfull \hbox (badness 7186) in paragraph at lines 252--253
+Underfull \hbox (badness 7186) in paragraph at lines 249--250
 \OT1/ptm/m/n/10 be-cause Gaus-sian smooth-ing is a neighborhood-based
  []
 
-<screenshots/frame.png, id=39, 886.512pt x 350.5095pt>
+[4 <./screenshots/kernel_distribution.png>]
+<screenshots/frame.png, id=37, 886.512pt x 350.5095pt>
 File: screenshots/frame.png Graphic file (type png)
 <use screenshots/frame.png>
-Package pdftex.def Info: screenshots/frame.png  used on input line 261.
+Package pdftex.def Info: screenshots/frame.png  used on input line 258.
 (pdftex.def)             Requested size: 252.0pt x 99.63417pt.
-<screenshots/compute_second_moment_matrix_stage.png, id=40, 1173.183pt x 350.5095pt>
+<screenshots/compute_second_moment_matrix_stage.png, id=38, 1173.183pt x 350.5095pt>
 File: screenshots/compute_second_moment_matrix_stage.png Graphic file (type png)
 <use screenshots/compute_second_moment_matrix_stage.png>
-Package pdftex.def Info: screenshots/compute_second_moment_matrix_stage.png  used on input line 276.
+Package pdftex.def Info: screenshots/compute_second_moment_matrix_stage.png  used on input line 273.
 (pdftex.def)             Requested size: 252.0pt x 75.28854pt.
-<screenshots/nsight-compute-comparison-1080p-5x5.png, id=41, 1187.637pt x 504.08325pt>
+ [5 <./screenshots/stream_distribution.png> <./screenshots/frame.png> <./screenshots/compute_second_moment_matrix_stage.png>]
+<screenshots/nsight-compute-comparison-1080p-5x5.png, id=45, 1187.637pt x 504.08325pt>
 File: screenshots/nsight-compute-comparison-1080p-5x5.png Graphic file (type png)
 <use screenshots/nsight-compute-comparison-1080p-5x5.png>
-Package pdftex.def Info: screenshots/nsight-compute-comparison-1080p-5x5.png  used on input line 293.
-(pdftex.def)             Requested size: 516.0pt x 219.01292pt.
-[5 <./screenshots/frame.png> <./screenshots/compute_second_moment_matrix_stage.png>] (harris_corner_video_report.bbl)
+Package pdftex.def Info: screenshots/nsight-compute-comparison-1080p-5x5.png  used on input line 290.
+(pdftex.def)             Requested size: 252.0pt x 106.95282pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
+\OT1/ptm/m/n/8 Fig. 8.  Nsight Com-pute com-par-i-son of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 291--291
+\OT1/pcr/m/n/8 ApplyGaussianSmoothingKernel \OT1/ptm/m/n/8 on the first 1080p frame
+ []
+
+(harris_corner_video_report.bbl [6 <./screenshots/nsight-compute-comparison-1080p-5x5.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -585,22 +607,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6 <./screenshots/nsight-compute-comparison-1080p-5x5.png>] (harris_corner_video_report.aux)
+[7
+
+] (harris_corner_video_report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 15459 strings out of 467871
- 318659 string characters out of 5418861
- 733271 words of memory out of 5000000
- 44052 multiletter control sequences out of 15000+600000
+ 15457 strings out of 467871
+ 318601 string characters out of 5418861
+ 733295 words of memory out of 5000000
+ 44050 multiletter control sequences out of 15000+600000
  671231 words of font info for 126 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,10n,94p,1601b,773s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on harris_corner_video_report.pdf (6 pages, 781065 bytes).
+<D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on harris_corner_video_report.pdf (7 pages, 775799 bytes).
 PDF statistics:
  123 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
