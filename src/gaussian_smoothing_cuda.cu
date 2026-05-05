@@ -6,42 +6,91 @@
 __constant__ float c_gaussian3x3[9];
 __constant__ float c_gaussian5x5[25];
 
-__global__ void ApplyGaussianSmoothingKernel(const float* input, float* output, int width, int height, FilterSize filterSize)
+__global__ void ApplyGaussianSmoothingKernel(
+    const float* input,
+    float* output,
+    int width,
+    int height,
+    FilterSize filterSize)
 {
-	const int x = blockIdx.x * blockDim.x + threadIdx.x;
-	const int y = blockIdx.y * blockDim.y + threadIdx.y;
-	if (x < width && y < height)
-	{
-		const float* c_gaussian;
-		if (filterSize == FilterSize::Size3x3)
-		{
-			c_gaussian = c_gaussian3x3;
-		}
-		else if (filterSize == FilterSize::Size5x5)
-		{
-			c_gaussian = c_gaussian5x5;
-		}
-		else
-		{
-			return;
-		}
-		float sum = 0.0f;
-		const int padSize = static_cast<int>(filterSize) / 2;
-		const int paddedWidth = width + 2 * padSize;
-		const int idx = (y + padSize) * paddedWidth + (x + padSize);
-		int filterIdxY = 0;
-		for (int j = idx - paddedWidth * padSize; j <= idx + paddedWidth * padSize; j += paddedWidth)
-		{
-			int filterIdxX = 0;
-			for (int i = j - padSize; i <= j + padSize; ++i)
-			{
-				sum += input[i] * c_gaussian[filterIdxY * (2 * padSize + 1) + filterIdxX];
-				++filterIdxX;
-			}
-			++filterIdxY;
-		}
-		output[y * width + x] = sum;
-	}
+    const int outX = blockIdx.x * blockDim.x + threadIdx.x;
+    const int outY = blockIdx.y * blockDim.y + threadIdx.y;
+
+    const int padSize = static_cast<int>(filterSize) / 2;
+    const int filterWidth = 2 * padSize + 1;
+
+    const int paddedWidth = width + 2 * padSize;
+    const int paddedHeight = height + 2 * padSize;
+
+    const float* c_gaussian = nullptr;
+
+    if (filterSize == FilterSize::Size3x3)
+    {
+        c_gaussian = c_gaussian3x3;
+    }
+    else if (filterSize == FilterSize::Size5x5)
+    {
+        c_gaussian = c_gaussian5x5;
+    }
+    else
+    {
+        return;
+    }
+
+    extern __shared__ float sharedTile[];
+
+    const int sharedWidth = blockDim.x + 2 * padSize;
+    const int sharedHeight = blockDim.y + 2 * padSize;
+
+    const int tileStartX = blockIdx.x * blockDim.x;
+    const int tileStartY = blockIdx.y * blockDim.y;
+
+    // Load input tile + halo into shared memory
+    for (int localY = threadIdx.y; localY < sharedHeight; localY += blockDim.y)
+    {
+        for (int localX = threadIdx.x; localX < sharedWidth; localX += blockDim.x)
+        {
+            const int globalX = tileStartX + localX;
+            const int globalY = tileStartY + localY;
+
+            if (globalX < paddedWidth && globalY < paddedHeight)
+            {
+                sharedTile[localY * sharedWidth + localX] =
+                    input[globalY * paddedWidth + globalX];
+            }
+            else
+            {
+                sharedTile[localY * sharedWidth + localX] = 0.0f;
+            }
+        }
+    }
+
+    __syncthreads();
+
+    if (outX >= width || outY >= height)
+        return;
+
+    float sum = 0.0f;
+
+    const int sharedCenterX = threadIdx.x + padSize;
+    const int sharedCenterY = threadIdx.y + padSize;
+
+    for (int fy = -padSize; fy <= padSize; ++fy)
+    {
+        for (int fx = -padSize; fx <= padSize; ++fx)
+        {
+            const int sharedX = sharedCenterX + fx;
+            const int sharedY = sharedCenterY + fy;
+
+            const int filterX = fx + padSize;
+            const int filterY = fy + padSize;
+
+            sum += sharedTile[sharedY * sharedWidth + sharedX] *
+                c_gaussian[filterY * filterWidth + filterX];
+        }
+    }
+
+    output[outY * width + outX] = sum;
 }
 
 void LoadGaussianFilterCoefficients(FilterSize filterSize)
@@ -111,9 +160,15 @@ void ApplyGaussianSmoothing(const float* h_Ixx, const float* h_Iyy, const float*
 
 	const dim3 block(16, 16);
 	const dim3 grid((width + block.x - 1) / block.x, (height + block.y - 1) / block.y);
-	ApplyGaussianSmoothingKernel << < grid, block >> > (d_IxxPadded, d_Sxx, width, height, filterSize);
-	ApplyGaussianSmoothingKernel << < grid, block >> > (d_IyyPadded, d_Syy, width, height, filterSize);
-	ApplyGaussianSmoothingKernel << < grid, block >> > (d_IxyPadded, d_Sxy, width, height, filterSize);
+
+    int sharedWidth = block.x + 2 * padSize;
+    int sharedHeight = block.y + 2 * padSize;
+
+    size_t sharedMemorySize = sharedWidth * sharedHeight * sizeof(float);
+
+	ApplyGaussianSmoothingKernel << < grid, block, sharedMemorySize >> > (d_IxxPadded, d_Sxx, width, height, filterSize);
+	ApplyGaussianSmoothingKernel << < grid, block, sharedMemorySize >> > (d_IyyPadded, d_Syy, width, height, filterSize);
+	ApplyGaussianSmoothingKernel << < grid, block, sharedMemorySize >> > (d_IxyPadded, d_Sxy, width, height, filterSize);
 
 	cudaDeviceSynchronize();
 

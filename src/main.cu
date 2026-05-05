@@ -9,7 +9,7 @@
 #include "harris_response_cuda.cuh"
 #include "finding_corners_cuda.cuh"
 
-constexpr FilterSize filterSize = FilterSize::Size3x3;
+constexpr FilterSize filterSize = FilterSize::Size5x5;
 
 int main(int argc, char** argv)
 {

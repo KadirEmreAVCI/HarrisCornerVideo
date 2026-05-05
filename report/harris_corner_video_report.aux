@@ -34,7 +34,23 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {III-C}6}\texttt  {finding\_corners\_cuda.cu}}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Method Details}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Mathematical Formulation}{3}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Detected Harris corners near image edges.}}{3}{}\protected@file@percent }
+\newlabel{fig:edge-corners-padding}{{3}{3}{}{figure.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Implementation Notes}{3}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Results}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Kernel Execution and Stream Distribution}{4}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Nsight Systems kernel/transfer distribution for a representative frame.}}{4}{}\protected@file@percent }
+\newlabel{fig:kernel-distribution}{{4}{4}{}{figure.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Nsight Systems stream-level distribution across the default and auxiliary streams.}}{4}{}\protected@file@percent }
+\newlabel{fig:stream-distribution}{{5}{4}{}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Full-Frame Timeline Interpretation}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Full-frame Nsight Systems timeline view (one frame instance within the full video).}}{5}{}\protected@file@percent }
+\newlabel{fig:full-frame}{{6}{5}{}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Stream Concurrency in Non-Filtering Stages}{5}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Detailed Nsight Systems view of stream usage in a non-filtering stage.}}{5}{}\protected@file@percent }
+\newlabel{fig:stream-stage}{{7}{5}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Threats to Validity and Limitations}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion and Next Steps}{5}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{harris1988}{1}
@@ -42,11 +58,5 @@
 \bibcite{lowe2004}{3}
 \bibcite{bay2008}{4}
 \bibcite{rublee2011}{5}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Plan (Results Pending)}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Planned Metrics}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Planned Comparisons}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Planned Ablations}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Threats to Validity and Limitations}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Conclusion and Next Steps}{4}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{References}{4}{}\protected@file@percent }
-\gdef \@abspage@last{4}
+\@writefile{toc}{\contentsline {section}{References}{6}{}\protected@file@percent }
+\gdef \@abspage@last{6}
