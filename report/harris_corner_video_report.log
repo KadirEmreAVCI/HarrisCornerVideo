@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.3)  5 MAY 2026 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.3.3)  5 MAY 2026 23:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -568,6 +568,11 @@ File: screenshots/compute_second_moment_matrix_stage.png Graphic file (type png)
 <use screenshots/compute_second_moment_matrix_stage.png>
 Package pdftex.def Info: screenshots/compute_second_moment_matrix_stage.png  used on input line 276.
 (pdftex.def)             Requested size: 252.0pt x 75.28854pt.
+<screenshots/nsight-compute-comparison-1080p-5x5.png, id=41, 1187.637pt x 504.08325pt>
+File: screenshots/nsight-compute-comparison-1080p-5x5.png Graphic file (type png)
+<use screenshots/nsight-compute-comparison-1080p-5x5.png>
+Package pdftex.def Info: screenshots/nsight-compute-comparison-1080p-5x5.png  used on input line 293.
+(pdftex.def)             Requested size: 516.0pt x 219.01292pt.
 [5 <./screenshots/frame.png> <./screenshots/compute_second_moment_matrix_stage.png>] (harris_corner_video_report.bbl)
 
 ** Conference Paper **
@@ -580,26 +585,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6
-
-] (harris_corner_video_report.aux)
+[6 <./screenshots/nsight-compute-comparison-1080p-5x5.png>] (harris_corner_video_report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 15451 strings out of 467871
- 318220 string characters out of 5418861
- 733249 words of memory out of 5000000
- 44044 multiletter control sequences out of 15000+600000
+ 15459 strings out of 467871
+ 318659 string characters out of 5418861
+ 733271 words of memory out of 5000000
+ 44052 multiletter control sequences out of 15000+600000
  671231 words of font info for 126 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,10n,94p,1601b,773s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on harris_corner_video_report.pdf (6 pages, 686675 bytes).
+<D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><D:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on harris_corner_video_report.pdf (6 pages, 781065 bytes).
 PDF statistics:
- 111 PDF objects out of 1000 (max. 8388607)
+ 123 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 43 words of extra memory for PDF output out of 10000 (max. 10000000)
 
