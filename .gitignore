@@ -1,2 +1,9 @@
 build/
 .vs/
+*.fdb_latexmk
+*.log
+*.aux
+*.fls
+*.out
+*.toc
+*.synctex.gz
